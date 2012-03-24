@@ -71,7 +71,7 @@ public class SimplePlayerInformation implements PlayerInformation {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getProperty(String key, Object ...args) throws NoSuchMethodException {
-		//Use in this form (String)getProperty("EntitySkin", entity);
+		//Use in this form (String)getProperty("EntitySkin", controller);
 		Object ret = null;
 		Class clazz = getClass();
 		try {
