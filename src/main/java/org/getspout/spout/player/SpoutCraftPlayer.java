@@ -192,6 +192,9 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 		if (obj == null) {
 			return false;
 		}
+		if (obj == this || (obj instanceof SpoutPlayer && obj.hashCode() == this.hashCode())) {
+			return true;
+		}
 		if (!(obj instanceof OfflinePlayer)) {
 			return false;
 		}
@@ -918,7 +921,7 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 		skin = url;
 
 		for (Player p : getWorld().getPlayers()) {
-			if (p instanceof SpoutPlayer) {
+			if (p instanceof SpoutPlayer && ((SpoutPlayer) p).isSpoutCraftEnabled()) {
 				((SpoutPlayer) p).sendPacket(new PacketSkinURL(getEntityId(), getSkin((SpoutPlayer) p)));
 			}
 		}
@@ -1214,12 +1217,12 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 		if (cp.getHandle().netServerHandler instanceof SpoutNetServerHandler) {
 			NetServerHandler oldHandler = cp.getHandle().netServerHandler;
 			/*
-			Set<ChunkCoordIntPair> chunkUpdateQueue = ((SpoutNetServerHandler) cp.getHandle().netServerHandler).getChunkUpdateQueue();
-			for (ChunkCoordIntPair c : chunkUpdateQueue) {
-			cp.getHandle().chunkCoordIntPairQueue.add(c);
-			}
-			((SpoutNetServerHandler) cp.getHandle().netServerHandler).flushUnloadQueue();
-			*/
+						   Set<ChunkCoordIntPair> chunkUpdateQueue = ((SpoutNetServerHandler) cp.getHandle().netServerHandler).getChunkUpdateQueue();
+						   for (ChunkCoordIntPair c : chunkUpdateQueue) {
+						   cp.getHandle().chunkCoordIntPairQueue.add(c);
+						   }
+						   ((SpoutNetServerHandler) cp.getHandle().netServerHandler).flushUnloadQueue();
+						   */
 			cp.getHandle().netServerHandler.a();
 			Location loc = player.getLocation();
 			NetServerHandler handler = new NetServerHandler(server.getHandle().server, cp.getHandle().netServerHandler.networkManager, cp.getHandle());
@@ -1242,11 +1245,11 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 			Location loc = player.getLocation();
 			SpoutNetServerHandler handler = new SpoutNetServerHandler(server.getHandle().server, cp.getHandle().netServerHandler.networkManager, cp.getHandle());
 			/*
-			for (Object o : cp.getHandle().playerChunkCoordIntPairs) {
-			ChunkCoordIntPair c = (ChunkCoordIntPair) o;
-			handler.addActiveChunk(c);
-			}
-			*/
+						   for (Object o : cp.getHandle().playerChunkCoordIntPairs) {
+						   ChunkCoordIntPair c = (ChunkCoordIntPair) o;
+						   handler.addActiveChunk(c);
+						   }
+						   */
 			handler.a(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
 			cp.getHandle().netServerHandler = handler;
 			NetworkManager nm = cp.getHandle().netServerHandler.networkManager;
